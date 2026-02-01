@@ -1,0 +1,7 @@
+# Ignore everything by default
+*
+
+# Whitelist (Un-ignore) specific files
+!ball_simulation.py
+!README.md
+!.gitignore
