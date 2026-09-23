@@ -113,4 +113,4 @@ demo.gif             # gameplay recording used in this README
 
 ## License
 
-License: not chosen yet.
+© 2026 Hamza Ben Ismail. All rights reserved.
