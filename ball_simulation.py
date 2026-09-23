@@ -21,6 +21,15 @@ BLUE_ACTIVE = (30, 144, 255)
 
 FPS = 60
 
+# Errors that repeat (e.g. every frame or every collision) are printed only once.
+_reported_errors = set()
+
+
+def log_once(message):
+    if message not in _reported_errors:
+        _reported_errors.add(message)
+        print(message + " (further identical errors are not shown)")
+
 class Ball:
     def __init__(self, x, y, radius, color, value, is_boss=False, update_func=None):
         self.x = x
@@ -403,14 +412,6 @@ class Game:
         self.spawn_count = max(1, self.spawn_count + amount)
         self.count_box.update_text(self.spawn_count)
 
-    def adjust_power(self, amount):
-        try:
-            val = int(self.spawn_power)
-            self.spawn_power = max(1, val + amount)
-            self.power_box.update_text(self.spawn_power)
-        except:
-            pass
-
     def adjust_boss_health(self, amount):
         self.boss_health = max(10, self.boss_health + amount)
         self.boss_hp_box.update_text(self.boss_health)
@@ -506,7 +507,7 @@ class Game:
                 else:
                     initial_val = int(val)
             except Exception as e:
-                print(f"Error parsing power: {e}")
+                log_once(f"Error parsing power: {e}")
                 initial_val = 1
 
         for i in range(self.spawn_count):
@@ -607,7 +608,7 @@ class Game:
                 try:
                     minion.value = int(minion.update_func(minion.level))
                 except Exception as e:
-                    print(f"Script Error: {e}")
+                    log_once(f"Script Error: {e}")
                     minion.value += 1
             else:
                 minion.value += 1
@@ -711,7 +712,8 @@ class Game:
                 pygame.display.flip()
                 self.clock.tick(FPS)
             except Exception as e:
-                print(f"Game Loop Error: {e}")
+                log_once(f"Game Loop Error: {e!r}")
+                self.clock.tick(FPS)  # keep the frame rate even when a frame fails
 
         pygame.quit()
 

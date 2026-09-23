@@ -19,26 +19,21 @@ A customizable physics-based battle simulation where you spawn "Minion" balls to
 
 ## Prerequisites
 
-*   Python 3.x
-*   Pygame library
+*   Python 3.8+
+*   Pygame 2 (installed from `requirements.txt`)
 
-## Installation
+## Installation and running
 
-1.  Install Python from [python.org](https://www.python.org/).
-2.  Install the Pygame library using pip:
+```bash
+git clone https://github.com/naniiic137/ball_simulation.git
+cd ball_simulation
 
-    ```bash
-    pip install pygame
-    ```
+python -m venv .venv
+# Windows: .venv\Scripts\activate    macOS/Linux: source .venv/bin/activate
+pip install -r requirements.txt
 
-## How to Run
-
-1.  Ensure `ball_simulation.py` is in your folder.
-2.  Run the script from your terminal:
-
-    ```bash
-    python ball_simulation.py
-    ```
+python ball_simulation.py
+```
 
 ## Controls & Usage
 
@@ -83,6 +78,10 @@ def power(level):
 *   **Save**: Apply the script. If there is a syntax error, it will be displayed at the bottom of the editor.
 *   **Close**: Discard changes or close the window.
 
+> **Security note:** the Power box and the Script Editor run your text with Python's `eval`/`exec`.
+> This is meant for experimenting on your own machine and is **not a sandbox**: only paste code you
+> trust, the same as running any Python script.
+
 ## Game Mechanics
 
 1.  **Spawning**: You can spawn multiple Bosses and waves of Minions.
@@ -96,4 +95,22 @@ def power(level):
 
 ## Troubleshooting
 
-*   **Script Error**: If your custom script fails during the game (e.g., dividing by zero), the error is printed to the console, and the Minion defaults to adding `+1` damage to keep the game running.
+*   **Script Error**: If your custom script fails during the game (e.g., dividing by zero), the error is printed to the console once, and the Minion falls back to adding `+1` damage so the game keeps running.
+
+## Project structure
+
+```text
+ball_simulation.py   # the whole game: Ball physics, UI widgets, script editor and game loop
+requirements.txt     # pygame
+demo.gif             # gameplay recording used in this README
+```
+
+## Limitations
+
+*   Collision checks compare every pair of balls (O(n²)), so thousands of balls will slow the game down.
+*   Power expressions and scripts are evaluated with `eval`/`exec` (see the security note above).
+*   Extremely large Boss HP values (like `10**10**100`) can freeze the game.
+
+## License
+
+License: not chosen yet.
